@@ -1,0 +1,311 @@
+program load complete, entry point: 0x8000f000, size: 0x3ed1338
+Self decompressing the image :
+########################################################################## [OK]
+Smart Init is enabled
+smart init is sizing iomem
+ID              TYPE       MEMORY_REQ
+0003E7          0X00474800 C2811 Mainboard
+                0X0014B430 Onboard PVDM2 SIMM
+                0X00264050 Onboard VPN
+                0X000021B8 Onboard USB
+00038E          0X0008BE00 Service Engine AIM
+                0X002C29F0 public buffer pools
+                0X00211000 public particle pools
+-----------------------------------------------
+TOTAL:          0X00D85628
+
+If any of the above Memory Requirements are
+"UNKNOWN", you may be using an unsupported
+configuration or there is a software problem and
+system operation may be compromised.
+Rounded IOMEM up to: 14Mb.
+Using 2 percent iomem. [14Mb/512Mb]
+
+              Restricted Rights Legend
+
+Use, duplication, or disclosure by the Government is
+subject to restrictions as set forth in subparagraph
+(c) of the Commercial Computer Software - Restricted
+Rights clause at FAR sec. 52.227-19 and subparagraph
+(c) (1) (ii) of the Rights in Technical Data and Computer
+Software clause at DFARS sec. 252.227-7013.
+
+           cisco Systems, Inc.
+           170 West Tasman Drive
+           San Jose, California 95134-1706
+
+Cisco IOS Software, 2800 Software (C2800NM-ADVIPSERVICESK9-M), Version 15.1(4)M4
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2012 by Cisco Systems, Inc.
+Compiled Thurs 5-Jan-12 15:41 by pt_team
+Image text-base: 0x2100F918, data-base: 0x24729040
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+
+cisco 2811 (MPC860) processor (revision 0x200) with 60416K/5120K bytes of memory
+Processor board ID JAD05190MTZ (4292891495)
+2 FastEthernet interface(s)
+DRAM configuration is 64 bits wide with parity disabled.
+255K bytes of non-volatile configuration memory.
+249856K bytes of ATA System CompactFlash 0 (Read/Write)
+
+
+         --- System Configuration Dialog ---
+
+Would you like to enter the initial configuration dialog? [yes/no]: no
+
+
+Press RETURN to get started!
+
+
+
+Router>en
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#int fa0/0
+Router(config-if)#ip address 192.169.0.1 255.255.255.0
+Router(config-if)#no shutdown
+
+Router(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/0, changed state to up
+
+Router(config-if)#do write memory
+Building configuration...
+[OK]
+Router(config-if)#ip dhcp pool net1
+Router(dhcp-config)#nennennetwork 192.169.0.1 255.255.255.0
+Router(dhcp-config)#exit
+Router(config)#
+Router(config)#
+Router(config)#ip dhcp pool net2
+Router(dhcp-config)#int fa0/1
+Router(config-if)#ip address 192.169.1.1 255.255.255.0
+Router(config-if)#no shutdown
+
+Router(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/1, changed state to up
+
+Router(config-if)#do write memory
+Building configuration...
+[OK]
+Router(config-if)#ip dhcp pool net2
+Router(dhcp-config)#network 192.169.1.1 255.255.255.0
+Router(dhcp-config)#exit
+Router(config)#exit
+Router#
+%SYS-5-CONFIG_I: Configured from console by console
+
+Router#
+
+
+
+
+
+
+
+
+Router con0 is now available
+
+
+
+
+
+
+Press RETURN to get started.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Router>ip dhcp pool net1
+          ^
+% Invalid input detected at '^' marker.
+	
+Router>en
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#ip dhcp pool net1
+Router(dhcp-config)#default-router 192.169.0.1
+Router(dhcp-config)#exit
+Router(config)#ip dhcp pool net2
+Router(dhcp-config)#default-router 192.169.0.1
+Router(dhcp-config)#exit
+Router(config)#
+Router#
+%SYS-5-CONFIG_I: Configured from console by console
+
+Router#
+Router#
+c1 = [1, 1, 1, 1]
+c2 = [1, -1, 1, -1]
+c3 = [1, 1, -1, -1]
+c4 = [1, -1, -1, 1]
+
+print('Enter the data bits:')
+d1 = int(input('Enter D1: '))
+d2 = int(input('Enter D2: '))
+d3 = int(input('Enter D3: '))
+d4 = int(input('Enter D4: '))
+
+r1 = [x * d1 for x in c1]
+r2 = [x * d2 for x in c2]
+r3 = [x * d3 for x in c3]
+r4 = [x * d4 for x in c4]
+
+resultant_channel = [r1[i] + r2[i] + r3[i] + r4[i] for i in range(len(c1))]
+
+print('Resultant Channel:')
+print(resultant_channel)
+
+channel = int(input('Enter the station to listen for C1=1, C2=2, C3=3, C4=4: '))
+
+if channel == 1:
+    rc = c1
+elif channel == 2:
+    rc = c2
+elif channel == 3:
+    rc = c3
+elif channel == 4:
+    rc = c4
+
+inner_product = sum([a*b for a, b in zip(resultant_channel, rc)])
+
+print('Inner Product:')
+print(inner_product)
+
+data = inner_product / len(rc)
+
+print('Data bit that was sent:')
+print(data)
+clc; 
+clear;
+N = 10^6; % number of bits or symbols
+% Transmitter
+ip = rand(1, N) > 0.5; % generating 0,1 with equal probability
+s = 2*ip - 1; % BPSK modulation 0 -> -1; 1 -> 0
+Eb_N0_dB = (-3:35); % multiple Eb/N0 values
+for ii = 1:length(Eb_N0_dB)
+    n = (1/sqrt(2)) * (randn(1, N) + 1i*randn(1, N)); % white Gaussian noise, 0dB variance
+    h = (1/sqrt(2)) * (randn(1, N) + 1i*randn(1, N)); % Rayleigh channel
+    % Channel and noise Noise addition
+    y = h.*s + 10^(-Eb_N0_dB(ii)/20)*n;
+    % equalization
+    yHat = y./h;
+    % receiver - hard decision decoding
+    ipHat = real(yHat) > 0;
+    % counting the errors
+    nErr(ii) = sum(ip ~= ipHat);
+end
+simBer = nErr/N; % simulated ber
+theoryBerAWGN = 0.5*erfc(sqrt(10.^(Eb_N0_dB/10))); % theoretical ber
+EbN0Lin = 10.^(Eb_N0_dB/10);
+theoryBer = 0.5.*(1-sqrt(EbN0Lin./(EbN0Lin+1)));
+% plot
+figure; % open a new figure window
+plot(Eb_N0_dB, theoryBerAWGN, 'cd-', 'LineWidth', 2);
+hold on;
+plot(Eb_N0_dB, theoryBer, 'r--', 'LineWidth', 2);
+plot(Eb_N0_dB, simBer, 'bs-', 'LineWidth', 2);
+hold off;
+grid on;
+title('BER for BPSK modulation in Rayleigh channel');
+xlabel('Eb/No, dB');
+ylabel('Bit Error Rate');
+legend('AWGN-Theory', 'Rayleigh-Theory', 'Rayleigh-Simulation');
+% Save figure to the PC
+saveas(gcf, 'BER_plot.png'); % Save the current figure as a PNG file
+
+
+
+import socket
+
+IP = socket.gethostbyname(socket.gethostname())
+PORT = 4455
+ADDR = (IP, PORT)
+SIZE = 1024
+FORMAT = "utf-8"
+
+def main():
+    print("[STARTING] Server is starting.")
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind(ADDR)
+    server.listen()
+    print("[LISTENING] Server is listening.")
+    
+    while True:
+        conn, addr = server.accept()
+        print(f"[NEW CONNECTION] {addr} connected.")
+        
+        filename = conn.recv(SIZE).decode(FORMAT)
+        print(f"[RECV] Receiving the filename: {filename}")
+        conn.send("Filename received.".encode(FORMAT))
+        
+        with open(filename, "wb") as file:  # Open the file in binary write mode
+            while True:
+                data = conn.recv(SIZE)
+                if not data:
+                    break
+                file.write(data)
+        
+        conn.send("Data received.".encode(FORMAT))
+        print(f"[FILE RECEIVED] File {filename} received from {addr}.")
+        conn.close()
+        print(f"[DISCONNECTED] {addr} disconnected.")
+
+if _name_ == "_main_":
+    main()
+server.py
+import socket
+
+IP = socket.gethostbyname(socket.gethostname())
+PORT = 4455
+ADDR = (IP, PORT)
+FORMAT = "utf-8"
+SIZE = 1024
+
+def main():
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client.connect(ADDR)
+    
+    file = open("Data/yt.txt", "rb")  # Open the file in binary mode for correct transmission
+    data = file.read()
+    
+    client.send("yt.txt".encode(FORMAT))
+    msg = client.recv(SIZE).decode(FORMAT)
+    print(f"[SERVER]: {msg}")
+    
+    client.sendall(data)  # Use sendall() to ensure complete data transmission
+    msg = client.recv(SIZE).decode(FORMAT)
+    print(f"[SERVER]: {msg}")
+    
+    file.close()
+    client.close()
+
+if _name_ == "_main_":
+    main()
+client.py⬆️
